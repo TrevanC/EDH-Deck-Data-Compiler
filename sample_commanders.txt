@@ -1,0 +1,7 @@
+# Sample Commander List for Testing
+# Lines starting with # are comments and will be ignored
+
+Ezuri, Claw of Progress
+Hearthhull, the Worldseed
+Atraxa, Praetors' Voice
+# Add more commanders here as needed

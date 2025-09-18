@@ -1,0 +1,53 @@
+http:
+  user_agent: "EDH-DeckData-Harvester/1.0 (https://github.com/user/EDHDeckData; contact@example.com)"
+  timeout: 30
+  max_retries: 3
+  backoff_base: 2
+  cache_dir: "./data/cache"
+
+sources:
+  archidekt:
+    enabled: true
+    base_url: "https://archidekt.com/api/decks/cards/"
+    rate_limit: 1.0  # requests per second
+    page_size: 100
+    max_pages: 1000
+    format_filter: "Commander"
+
+  moxfield:
+    enabled: true
+    base_url: "https://api.moxfield.com"
+    rate_limit: 0.5  # requests per second (conservative)
+    discovery:
+      max_pages: 50
+      popular_commanders:
+        - "Atraxa, Praetors' Voice"
+        - "Edgar Markov"
+        - "The Ur-Dragon"
+        - "Muldrotha, the Gravetide"
+        - "Chulane, Teller of Tales"
+    export:
+      max_concurrency: 2
+      inter_request_sleep: 2
+
+scryfall:
+  oracle_bulk_url: "https://api.scryfall.com/bulk-data/oracle-cards"
+  local_bulk_path: "./data/scryfall_oracle.json"
+  refresh_cadence_hours: 168  # weekly
+
+storage:
+  type: "sqlite"
+  path: "./data/edh_decks.db"
+  wal_mode: true
+
+scheduling:
+  archidekt_incremental: "00:00"  # UTC
+  moxfield_discovery: "02:00"     # UTC
+  moxfield_export: "03:00"        # UTC
+  scryfall_refresh: "04:00"       # UTC
+
+logging:
+  level: "INFO"
+  file: "./logs/harvester.log"
+  max_size_mb: 100
+  backup_count: 5
